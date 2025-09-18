@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Scrollbar sutil en dark */
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: #2a334a; border-radius: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/***** Utilidades *****/
+.card { @apply bg-slate-800/70 backdrop-blur border border-slate-700/80 rounded-2xl p-5 shadow-card; }
+.badge { @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium bg-slate-700 text-slate-200; }
+.icon-btn { @apply inline-flex items-center justify-center rounded-xl p-2 hover:bg-slate-700/60 transition; }
+
+/* Highlight animation for newly focused list items */
+@keyframes flash-bg {
+  0% { box-shadow: 0 0 0 0 rgba(99,102,241,0.6); background-color: rgba(99,102,241,0.12); }
+  60% { box-shadow: 0 0 0 6px rgba(99,102,241,0.0); background-color: transparent; }
+  100% { box-shadow: none; background-color: transparent; }
+}
+.flash-highlight {
+  animation: flash-bg 1.2s ease-out;
+}
