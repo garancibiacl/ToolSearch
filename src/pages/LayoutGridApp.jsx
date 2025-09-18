@@ -6,7 +6,7 @@ const gridLayouts = [
   {
     id: 'grid-2x2',
     name: 'Grid 2 x 2',
-    img: '/img/grid-header-main-footer.png',
+    img: '/img/grid-header-main-footer.svg',
     html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td colspan="2" align="center" valign="top">
@@ -51,7 +51,7 @@ const gridLayouts = [
   {
     id: 'grid-1x2',
     name: 'Grid 1 x 2',
-    img: '/img/grid-infinite.png',
+    img: '/img/grid-infinite.svg',
     html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td colspan="2" align="center" valign="top">
@@ -89,7 +89,7 @@ const gridLayouts = [
   {
     id: 'grid-3x1',
     name: 'Grid 3 x 1',
-    img: '/img/grid-holy.png',
+    img: '/img/grid-holy.svg',
     html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td colspan="2" align="center" valign="top">
@@ -134,8 +134,8 @@ const gridLayouts = [
 ]
 
 const flexLayouts = [
-  { id: 'flex-row', name: 'Row', img: '/img/grid-infinite-areas.png', html: `<div class="d-flex">\n  <div class="flex-item">Item 1<\/div>\n  <div class="flex-item">Item 2<\/div>\n  <div class="flex-item">Item 3<\/div>\n<\/div>` },
-  { id: 'flex-wrap', name: 'Row Wrap', img: '/img/grid-sidebar.png', html: `<div class="d-flex flex-wrap">\n  <div class="flex-item">Item 1<\/div>\n  <div class="flex-item">Item 2<\/div>\n  <div class="flex-item">Item 3<\/div>\n  <div class="flex-item">Item 4<\/div>\n<\/div>` },
+  { id: 'flex-row', name: 'Row', img: '/img/grid-infinite-areas.svg', html: `<div class="d-flex">\n  <div class="flex-item">Item 1<\/div>\n  <div class="flex-item">Item 2<\/div>\n  <div class="flex-item">Item 3<\/div>\n<\/div>` },
+  { id: 'flex-wrap', name: 'Row Wrap', img: '/img/grid-sidebar.svg', html: `<div class="d-flex flex-wrap">\n  <div class="flex-item">Item 1<\/div>\n  <div class="flex-item">Item 2<\/div>\n  <div class="flex-item">Item 3<\/div>\n  <div class="flex-item">Item 4<\/div>\n<\/div>` },
 ]
 
 // Simple toast inside this page
@@ -177,8 +177,16 @@ export default function LayoutGridApp() {
   const LayoutCard = ({ layout, category }) => (
     <div className="card group hover:shadow-lg transition-all duration-300 cursor-pointer border border-slate-800/60">
       <div className="p-4">
-        <div className="aspect-video bg-slate-800/60 rounded-lg mb-3 overflow-hidden border border-slate-700/70">
-          <img src={layout.img} alt={layout.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        <div className="aspect-video bg-slate-800/60 rounded-lg mb-3 overflow-hidden border border-slate-700/70 p-3">
+          <img
+            src={layout.img}
+            alt={layout.name}
+            className="w-full h-full object-contain group-hover:scale-[1.02] transition-transform duration-300"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/img/searcho-logo.png';
+            }}
+          />
         </div>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
