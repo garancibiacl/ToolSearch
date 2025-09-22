@@ -14,6 +14,7 @@ import {
   Pencil,
 } from "lucide-react";
 import { useBanners } from "../context/BannerContext.jsx";
+import CreateBannerDialog from "../components/CreateBannerDialog.jsx";
 
 export default function BannerSearchApp() {
   // Contexto compartido de banners
@@ -28,6 +29,17 @@ export default function BannerSearchApp() {
     searchCatalog,
     addBanner,
   } = useBanners();
+
+  // Modal de creación de banner
+  const [openCreate, setOpenCreate] = useState(false);
+  const onCloseCreate = (payload) => {
+    setOpenCreate(false);
+    if (payload) {
+      const created = addBanner(payload);
+      // Apilar inmediatamente para que se vea en Vista previa
+      selectAndAppend(created);
+    }
+  };
   // Fuente externa: ahora usamos searchCatalog del contexto para sugerencias
   const [external, setExternal] = useState([]);
   const [extLoaded, setExtLoaded] = useState(false);
@@ -165,17 +177,17 @@ export default function BannerSearchApp() {
 
   // Código AMPscript combinado según elementos en la vista previa (selectedStack)
   const bannerToAmpRow = (b) => {
-    if (!b) return ''
-    const href = b.href || '#'
-    const src = b.src || b.img_src || ''
-    const alt = b.alt || ''
-    return `  <tr>\n    <td colspan="2" align="center">\n      <a href="%%=RedirectTo(concat('${href}',@prefix))=%%" target="_blank">\n         <img src="${src}" alt="${alt}" style="display:block; width: 100%;" border="0">\n       </a>\n    </td>\n  </tr>`
-  }
+    if (!b) return "";
+    const href = b.href || "#";
+    const src = b.src || b.img_src || "";
+    const alt = b.alt || "";
+    return `  <tr>\n    <td colspan="2" align="center">\n      <a href="%%=RedirectTo(concat('${href}',@prefix))=%%" target="_blank">\n         <img src="${src}" alt="${alt}" style="display:block; width: 100%;" border="0">\n       </a>\n    </td>\n  </tr>`;
+  };
   const combinedCode = useMemo(() => {
-    if (!selectedStack || selectedStack.length === 0) return ''
-    const rows = selectedStack.map(bannerToAmpRow).join('\n')
-    return `<table width="600" cellspacing="0" cellpadding="0" align="center">\n\n${rows}\n\n</table>`
-  }, [selectedStack])
+    if (!selectedStack || selectedStack.length === 0) return "";
+    const rows = selectedStack.map(bannerToAmpRow).join("\n");
+    return `<table width="600" cellspacing="0" cellpadding="0" align="center">\n\n${rows}\n\n</table>`;
+  }, [selectedStack]);
 
   // Calcular posición del dropdown para portal
   const updateDropdownPosition = () => {
@@ -442,7 +454,11 @@ export default function BannerSearchApp() {
             </select>
           </div>
 
-          <button className="inline-flex items-center gap-2 justify-center bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl px-3 py-2 text-sm">
+          <button
+            onClick={() => setOpenCreate(true)}
+            className="inline-flex items-center gap-2 justify-center bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl px-3 py-2 text-sm"
+            data-component-name="BannerSearchApp"
+          >
             <Plus className="h-4 w-4" />
             Agregar Banner
           </button>
@@ -725,6 +741,17 @@ export default function BannerSearchApp() {
         </div>
       </div>
       <ToastContainer items={toasts} />
+      {openCreate &&
+        createPortal(
+          <CreateBannerDialog
+            open={openCreate}
+            onClose={onCloseCreate}
+            initial={null}
+            onSaved={(saved) => showToast(`Guardado: ${saved?.nombre || saved?.name || 'banner'}`)}
+            onError={(msg) => showToast(msg || 'Error al guardar', 'warn')}
+          />,
+          document.body
+        )}
     </div>
   );
 }

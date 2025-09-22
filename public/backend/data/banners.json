@@ -520,5 +520,17 @@
     "href": "%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/content/preparate-para-el-invierno?',@prefix))=%%",
     "img_src": "https://www.sodimac.cl/static/envioweb/2025/banners/images/Banner-6-cuotas.png",
     "alt": "Hasta 6 cuotas sin interes"
+  },
+  {
+    "nombre": "dsdsd",
+    "href": "%%=RedirectTo(concat('dsdsdd?',@prefix))=%%",
+    "img_src": "dsdsd",
+    "alt": "dsds"
+  },
+  {
+    "nombre": "kjk",
+    "href": "%%=RedirectTo(concat('dsdsd?',@prefix))=%%",
+    "img_src": "dsdsdsd",
+    "alt": "dsdds"
   }
 ]

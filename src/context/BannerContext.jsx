@@ -98,8 +98,29 @@ export function BannerProvider({ children }) {
   // Cargar catálogo externo con API wrapper
   useEffect(() => {
     (async () => {
-      const data = await fetchCatalog();
-      setCatalog((prev) => (prev.length ? prev : data));
+      try {
+        const data = await fetchCatalog();
+        setCatalog((prev) => (prev.length ? prev : (Array.isArray(data) ? data : [])));
+      } catch {
+        // noop: sin catálogo externo
+      }
+    })();
+  }, []);
+
+  // Cargar banners iniciales desde backend si existen
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/banners');
+        if (!res.ok) return; 
+        const json = await res.json();
+        const list = Array.isArray(json?.data) ? json.data : [];
+        if (list.length > 0) {
+          setBanners(list);
+        }
+      } catch {
+        // si falla, mantener "initial"
+      }
     })();
   }, []);
 
