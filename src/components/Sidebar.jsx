@@ -50,7 +50,7 @@ export default function Sidebar({ active, setActive, theme, setTheme }) {
   }
 
   return (
-    <aside className="h-screen sticky top-0 bg-sidebar border-r border-slate-800">
+    <aside className="h-screen sticky top-0 bg-sidebar border-r border-slate-800 z-40">
       <div className={`flex flex-col h-full ${collapsed ? 'w-16' : 'w-64'} transition-[width] duration-300`}>
         {/* Header */}
         <div className="flex items-center justify-between gap-2 px-3 py-4 border-b border-slate-800/60">
@@ -65,7 +65,7 @@ export default function Sidebar({ active, setActive, theme, setTheme }) {
               </div>
             )}
           </div>
-          <button onClick={() => setCollapsed(v => !v)} className="icon-btn" aria-label="Toggle sidebar">
+          <button onClick={() => setCollapsed(v => !v)} className="icon-btn z-50 relative" aria-label="Toggle sidebar">
             {collapsed ? <ChevronRight className="h-4 w-4 text-slate-300"/> : <ChevronLeft className="h-4 w-4 text-slate-300"/>}
           </button>
         </div>

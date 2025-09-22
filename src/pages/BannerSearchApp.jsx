@@ -85,8 +85,9 @@ export default function BannerSearchApp() {
 
   // Simple toast system
   const [toasts, setToasts] = useState([]);
-  // Tooltip de "copiado" para el botón de copiar del textarea
+  // Tooltip e indicador visual para el botón de copiar del textarea
   const [copiedCodeTip, setCopiedCodeTip] = useState(false);
+  const [copiedCodeActive, setCopiedCodeActive] = useState(false);
   // Último botón de copiar en la lista que disparó copia
   const [lastCopiedId, setLastCopiedId] = useState(null);
   const showToast = (text, variant = "default") => {
@@ -779,16 +780,18 @@ export default function BannerSearchApp() {
                 value={combinedCode}
               />
               <button
-                className="absolute top-3 right-12 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600"
+                className={`absolute top-3 right-12 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 ${copiedCodeActive ? 'ring-2 ring-blue-500' : ''}`}
                 title="Copiar"
                 onClick={() => {
                   copy(combinedCode);
                   showToast("HTML copiado");
                   setCopiedCodeTip(true);
+                  setCopiedCodeActive(true);
                   setTimeout(() => setCopiedCodeTip(false), 1200);
+                  setTimeout(() => setCopiedCodeActive(false), 1200);
                 }}
               >
-                <Copy className="h-5 w-5" />
+                {copiedCodeActive ? <Check className="h-5 w-5 text-green-400" /> : <Copy className="h-5 w-5" />}
               </button>
               {copiedCodeTip && (
                 <div className="absolute -top-2 right-12 translate-y-[-100%] bg-slate-700 text-slate-100 text-xs px-2 py-1 rounded-md shadow-soft border border-slate-600">
