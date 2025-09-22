@@ -532,5 +532,11 @@
     "href": "%%=RedirectTo(concat('dsdsd?',@prefix))=%%",
     "img_src": "dsdsdsd",
     "alt": "dsdds"
+  },
+  {
+    "nombre": "dsdd",
+    "href": "%%=RedirectTo(concat('dsdsd?',@prefix))=%%",
+    "img_src": "dsdsd",
+    "alt": "sd"
   }
 ]

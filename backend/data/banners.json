@@ -536,5 +536,13 @@
     "img_src": "dsdsdsd",
     "alt": "dsdds",
     "createdAt": "2025-09-22T02:16:04.465Z"
+  },
+  {
+    "id": 1758559076085,
+    "nombre": "dsdd",
+    "href": "%%=RedirectTo(concat('dsdsd?',@prefix))=%%",
+    "img_src": "dsdsd",
+    "alt": "sd",
+    "createdAt": "2025-09-22T16:37:56.085Z"
   }
 ]

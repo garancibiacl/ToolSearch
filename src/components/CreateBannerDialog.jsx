@@ -73,6 +73,21 @@ export default function CreateBannerDialog({ open, onClose, initial, onSaved, on
       img_src: normalizeImg(img),
       alt,
     };
+    // Modo edición: si viene un "initial" con id, no llamar al backend.
+    // Devolvemos los datos editados al contenedor para que actualice su estado.
+    if (initial?.id) {
+      try {
+        try { onSaved && onSaved(payload); } catch {}
+        onClose?.(payload);
+      } catch (err) {
+        console.error(err);
+        setError(String(err.message || err) || 'Error desconocido');
+        try { onError && onError(String(err.message || err)); } catch {}
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
     try {
       const res = await fetch('/api/banners', {
         method: 'POST',

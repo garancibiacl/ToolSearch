@@ -6,6 +6,7 @@ import {
   Code,
   Eye,
   Copy,
+  Check,
   Download,
   Upload,
   Trash2,
@@ -20,25 +21,40 @@ export default function BannerSearchApp() {
   // Contexto compartido de banners
   const {
     banners,
-    selectAndAppend,
+    setBanners,
     selected,
+    setSelected,
     selectedStack,
+    setSelectedStack,
     clearStack,
     deleteBanner,
     copyHtml,
     searchCatalog,
     addBanner,
+    selectAndAppend,
   } = useBanners();
 
   // Modal de creación de banner
   const [openCreate, setOpenCreate] = useState(false);
+  const [editing, setEditing] = useState(null);
   const onCloseCreate = (payload) => {
     setOpenCreate(false);
     if (payload) {
-      const created = addBanner(payload);
-      // Apilar inmediatamente para que se vea en Vista previa
-      selectAndAppend(created);
+      if (editing && editing.id != null) {
+        const updated = { ...editing, ...payload };
+        // Actualizar listado principal
+        setBanners((prev) => prev.map((b) => (b.id === editing.id ? { ...b, ...updated } : b)));
+        // Actualizar pila seleccionada
+        setSelectedStack((prev) => prev.map((b) => (b.id === editing.id ? { ...b, ...updated } : b)));
+        // Actualizar seleccionado actual si corresponde
+        if (selected?.id === editing.id) setSelected(updated);
+      } else {
+        const created = addBanner(payload);
+        // Apilar inmediatamente para que se vea en Vista previa
+        selectAndAppend(created);
+      }
     }
+    setEditing(null);
   };
   // Fuente externa: ahora usamos searchCatalog del contexto para sugerencias
   const [external, setExternal] = useState([]);
@@ -69,6 +85,10 @@ export default function BannerSearchApp() {
 
   // Simple toast system
   const [toasts, setToasts] = useState([]);
+  // Tooltip de "copiado" para el botón de copiar del textarea
+  const [copiedCodeTip, setCopiedCodeTip] = useState(false);
+  // Último botón de copiar en la lista que disparó copia
+  const [lastCopiedId, setLastCopiedId] = useState(null);
   const showToast = (text, variant = "default") => {
     const id = Math.random().toString(36).slice(2);
     setToasts((prev) => [...prev, { id, text, variant }]);
@@ -178,10 +198,12 @@ export default function BannerSearchApp() {
   // Código AMPscript combinado según elementos en la vista previa (selectedStack)
   const bannerToAmpRow = (b) => {
     if (!b) return "";
-    const href = b.href || "#";
+    const rawHref = b.href || "#";
+    const isAmp = /%%=\s*RedirectTo\s*\(/i.test(rawHref);
+    const href = isAmp ? rawHref : `%%=RedirectTo(concat('${rawHref}',@prefix))=%%`;
     const src = b.src || b.img_src || "";
     const alt = b.alt || "";
-    return `  <tr>\n    <td colspan="2" align="center">\n      <a href="%%=RedirectTo(concat('${href}',@prefix))=%%" target="_blank">\n         <img src="${src}" alt="${alt}" style="display:block; width: 100%;" border="0">\n       </a>\n    </td>\n  </tr>`;
+    return `  <tr>\n    <td colspan="2" align="center">\n      <a href="${href}" target="_blank">\n         <img src="${src}" alt="${alt}" style="display:block; width: 100%;" border="0">\n       </a>\n    </td>\n  </tr>`;
   };
   const combinedCode = useMemo(() => {
     if (!selectedStack || selectedStack.length === 0) return "";
@@ -262,6 +284,22 @@ export default function BannerSearchApp() {
     if (s.source === "internal" && typeof s.id === "number") {
       const found = banners.find((d) => d.id === s.id);
       if (found) added = selectAndAppend(found);
+      // Robustez: si no se encontró (por desincronización), construir desde la sugerencia
+      if (!added) {
+        const payload = {
+          id: s.id,
+          nombre: s.nombre,
+          alt: s.alt || "",
+          href: s.href || "#",
+          img_src: s.img_src || "",
+          categoria: "Importado",
+          width: 600,
+          height: 200,
+          tags: ["sugerencia"],
+        };
+        const ensured = addBanner ? addBanner(payload) : payload;
+        added = selectAndAppend(ensured);
+      }
     } else if (s.source === "catalog" && s._raw) {
       // Agregar desde catálogo y luego seleccionar por id
       const payload = addBanner
@@ -278,6 +316,22 @@ export default function BannerSearchApp() {
           })
         : null;
       // Importante: pasar el objeto para apilar de inmediato, no solo el id
+      added = payload ? selectAndAppend(payload) : null;
+    } else {
+      // Fallback: tratar cualquier otro origen como elemento suelto
+      const payload = addBanner
+        ? addBanner({
+            id: s.id || Date.now(),
+            nombre: s.nombre,
+            alt: s.alt || "",
+            href: s.href || "#",
+            img_src: s.img_src || "",
+            categoria: "Importado",
+            width: 600,
+            height: 200,
+            tags: ["sugerencia"],
+          })
+        : null;
       added = payload ? selectAndAppend(payload) : null;
     }
 
@@ -524,9 +578,11 @@ export default function BannerSearchApp() {
                         title="Editar"
                         aria-label="Editar"
                         onClick={(e) => {
-                          e.stopPropagation(); /* TODO: onEdit(b) */
+                          e.stopPropagation();
+                          setEditing(b);
+                          setOpenCreate(true);
                         }}
-                        className="p-1 rounded-md hover:bg-slate-700/70 text-slate-300"
+                        className="p-1 rounded-md hover:bg-slate-700/70 text-white"
                       >
                         <Pencil size={16} />
                       </button>
@@ -538,22 +594,31 @@ export default function BannerSearchApp() {
                           deleteBanner(b.id);
                           showToast("Banner eliminado", "warn");
                         }}
-                        className="p-1 rounded-md hover:bg-slate-700/70 text-red-400"
+                        className="p-1 rounded-md hover:bg-slate-700/70 text-white"
                       >
                         <Trash2 size={16} />
                       </button>
-                      <button
-                        title="Copiar HTML"
-                        aria-label="Copiar HTML"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          copyHtml(b);
-                          showToast("HTML copiado");
-                        }}
-                        className="p-1 rounded-md hover:bg-slate-700/70 text-blue-400"
-                      >
-                        <Copy size={16} />
-                      </button>
+                      <div className="relative inline-block">
+                        <button
+                          title="Copiar HTML"
+                          aria-label="Copiar HTML"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            copyHtml(b);
+                            showToast("HTML copiado");
+                            setLastCopiedId(b.id);
+                            setTimeout(() => setLastCopiedId((prev) => (prev === b.id ? null : prev)), 1200);
+                          }}
+                          className={`p-1 rounded-md hover:bg-slate-700/70 ${lastCopiedId === b.id ? 'ring-2 ring-blue-500 text-green-400' : 'text-white'}`}
+                        >
+                          {lastCopiedId === b.id ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
+                        </button>
+                        {lastCopiedId === b.id && (
+                          <span className="absolute -top-2 left-1/2 -translate-x-1/2 translate-y-[-100%] text-xs px-2 py-1 rounded-md bg-slate-700 text-slate-100 border border-slate-600 shadow-soft whitespace-nowrap">
+                            ¡Copiado!
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </button>
@@ -631,6 +696,15 @@ export default function BannerSearchApp() {
                                 return n;
                               })
                             }
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = "/img/searcho-logo.png";
+                              setLoaded((prev) => {
+                                const n = new Set(prev);
+                                n.add(key);
+                                return n;
+                              });
+                            }}
                           />
                         </div>
 
@@ -710,10 +784,17 @@ export default function BannerSearchApp() {
                 onClick={() => {
                   copy(combinedCode);
                   showToast("HTML copiado");
+                  setCopiedCodeTip(true);
+                  setTimeout(() => setCopiedCodeTip(false), 1200);
                 }}
               >
                 <Copy className="h-5 w-5" />
               </button>
+              {copiedCodeTip && (
+                <div className="absolute -top-2 right-12 translate-y-[-100%] bg-slate-700 text-slate-100 text-xs px-2 py-1 rounded-md shadow-soft border border-slate-600">
+                  Copiado!
+                </div>
+              )}
               <button
                 className="absolute top-3 right-3 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-slate-700 text-white hover:bg-slate-600"
                 title="Descargar"
@@ -746,8 +827,8 @@ export default function BannerSearchApp() {
           <CreateBannerDialog
             open={openCreate}
             onClose={onCloseCreate}
-            initial={null}
-            onSaved={(saved) => showToast(`Guardado: ${saved?.nombre || saved?.name || 'banner'}`)}
+            initial={editing}
+            onSaved={(saved) => showToast(`${editing ? 'Actualizado' : 'Guardado'}: ${saved?.nombre || saved?.name || 'banner'}`)}
             onError={(msg) => showToast(msg || 'Error al guardar', 'warn')}
           />,
           document.body
