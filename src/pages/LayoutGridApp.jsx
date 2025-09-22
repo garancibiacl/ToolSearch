@@ -1,12 +1,12 @@
-import React, { useMemo, useState } from 'react'
-import { Copy, Grid, Layers } from 'lucide-react'
+import React, { useMemo, useState } from "react";
+import { Copy, Grid, Layers } from "lucide-react";
 
 // Embedded layout data to avoid external imports
 const gridLayouts = [
   {
-    id: 'grid-2x2',
-    name: 'Grid 2 x 2',
-    img: '/img/grid-header-main-footer.svg',
+    id: "grid-2x2",
+    name: "Grid 2 x 2",
+    img: "/img/grid-header-main-footer.svg",
     html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td colspan="2" align="center" valign="top">
@@ -14,14 +14,14 @@ const gridLayouts = [
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/seleccion/maestro-de-la-casa?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/06-junio/13-grupo-b/images/13-grupo-B-1.png" alt="Ir a Maestro de la casa" style="display: block" border="0" />
+                <img src="/img/grid-2x2.png" alt="Ir a Maestro de la casa" style="display: block" border="0" />
               </a>
             </td>
           </tr>
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/seleccion/guardian-del-jardin?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/06-junio/13-grupo-b/images/13-grupo-B-2.png" alt="Ir a Guardian del jardin" style="display: block" border="0" />
+                <img src="/img/grid-2x2.png" alt="Ir a Guardian del jardin" style="display: block" border="0" />
               </a>
             </td>
           </tr>
@@ -32,26 +32,26 @@ const gridLayouts = [
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/seleccion/parrillero-de-la-casa?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/06-junio/13-grupo-b/images/13-grupo-B-3.png" alt="Ir a Parrillero de la casa" style="display: block" border="0" />
+                <img src="/img/grid-2x2.png" alt="Ir a Parrillero de la casa" style="display: block" border="0" />
               </a>
             </td>
           </tr>
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/seleccion/el-mas-tecnologico?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/06-junio/13-grupo-b/images/13-grupo-B-4.png" alt="Ir a El mas tecnologico" style="display: block" border="0" />
+                <img src="/img/grid-2x2.png" alt="Ir a El mas tecnologico" style="display: block" border="0" />
               </a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-  </table>`
+  </table>`,
   },
   {
-    id: 'grid-1x2',
-    name: 'Grid 1 x 2',
-    img: '/img/grid-infinite.svg',
+    id: "grid-1x2",
+    name: "Grid 1 x 2",
+    img: "/img/grid-infinite.svg",
     html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td colspan="2" align="center" valign="top">
@@ -59,7 +59,7 @@ const gridLayouts = [
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/seleccion/maestro-de-la-casa?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/06-junio/11-productos-wow/images/11-productos-wow-8.png" alt="Ir a Maestro de la casa" style="display:block;" border="0">
+                <img src="/img/grid-1x2.png" alt="Ir a Maestro de la casa" style="display:block;" border="0">
               </a>
             </td>
           </tr>
@@ -70,26 +70,26 @@ const gridLayouts = [
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/seleccion/guardian-del-jardin?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/06-junio/11-productos-wow/images/11-productos-wow-9.png" alt="Ir a Guardian del jardin" style="display:block;" border="0">
+                <img src="/img/grid-1x2.png" alt="Ir a Guardian del jardin" style="display:block;" border="0">
               </a>
             </td>
           </tr>
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/seleccion/guardian-del-jardin?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/06-junio/11-productos-wow/images/11-productos-wow-10.png" alt="Ir a Guardian del jardin" style="display:block;" border="0">
+                <img src="/img/grid-1x2.png" alt="Ir a Guardian del jardin" style="display:block;" border="0">
               </a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-  </table>`
+  </table>`,
   },
   {
-    id: 'grid-3x1',
-    name: 'Grid 3 x 1',
-    img: '/img/grid-holy.svg',
+    id: "grid-3x1",
+    name: "Grid 3 x 1",
+    img: "/img/grid-holy.svg",
     html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td colspan="2" align="center" valign="top">
@@ -97,21 +97,21 @@ const gridLayouts = [
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/content/preparate-para-el-invierno?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/07-julio/02-fan-diseno/images/02-fan-diseno-2.png" alt="Ir a Preparate para el invierno" style="display:block;" border="0">
+                <img src="/img/grid-3x1.png" alt="Ir a Preparate para el invierno" style="display:block;" border="0">
               </a>
             </td>
           </tr>
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/lista/cat2073/Ropa-de-Cama?sid=SO_HO__365851?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/07-julio/02-fan-diseno/images/02-fan-diseno-3.png" alt="Ir a Ropa de Cama" style="display:block;" border="0">
+                <img src="/img/grid-3x1.png" alt="Ir a Ropa de Cama" style="display:block;" border="0">
               </a>
             </td>
           </tr>
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/lista/cat5540010/Cortinas-y-rollers?sid=SO_HO__365853?',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/07-julio/02-fan-diseno/images/02-fan-diseno-4.png" alt="Ir a Cortinas y rollers" style="display:block;" border="0">
+                <img src="/img/grid-3x1.png" alt="Ir a Cortinas y rollers" style="display:block;" border="0">
               </a>
             </td>
           </tr>
@@ -122,57 +122,180 @@ const gridLayouts = [
           <tr>
             <td colspan="2" align="center">
               <a href="%%=RedirectTo(concat('https://www.sodimac.cl/sodimac-cl/buscar?Ntt=9077952+9077391&sid=SO_HO__366153&',@prefix))=%%" target="_blank">
-                <img src="https://www.sodimac.cl/static/envioweb/2025/07-julio/02-fan-diseno/images/02-fan-diseno-5.gif" alt="Ir a COleccion Sherpa" style="display:block;" border="0">
+                <img src="/img/grid-3x1.png" alt="Ir a COleccion Sherpa" style="display:block;" border="0">
               </a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
+  </table>`,
+  },
+  // Additional local grid presets
+  {
+    id: 'grid-1x2x2',
+    name: 'Grid 1 x 2 x 2',
+    img: '/img/grid-1x2x2.png',
+    html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td colspan="2" align="center"><img src="/img/grid-1x2x2.png" alt="Hero" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="/img/grid-1x2x2.png" alt="Left" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-1x2x2.png" alt="Right" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src="/img/grid-1x2x2.png" alt="Footer" style="display:block;" border="0" /></td>
+  </tr>
+  </table>`
+  },
+  {
+    id: 'grid-2x1x2',
+    name: 'Grid 2 x 1 x 2',
+    img: '/img/grid-2x1x2.png',
+    html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center"><img src="/img/grid-2x1x2.png" alt="Left" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-2x1x2.png" alt="Right" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src="/img/grid-2x1x2.png" alt="Footer" style="display:block;" border="0" /></td>
+  </tr>
+  </table>`
+  },
+  {
+    id: 'grid-2x2x2',
+    name: 'Grid 2 x 2 x 2',
+    img: '/img/grid-2x2x2.png',
+    html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center"><img src="/img/grid-2x2x2.png" alt="A1" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-2x2x2.png" alt="A2" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="/img/grid-2x2x2.png" alt="B1" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-2x2x2.png" alt="B2" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="/img/grid-2x2x2.png" alt="C1" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-2x2x2.png" alt="C2" style="display:block;" border="0" /></td>
+  </tr>
+  </table>`
+  },
+  {
+    id: 'grid-2x3x1',
+    name: 'Grid 2 x 3 x 1',
+    img: '/img/grid-2x3x1.png',
+    html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td colspan="3" align="center"><img src="/img/grid-2x3x1.png" alt="Top" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="/img/grid-2x3x1.png" alt="1" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-2x3x1.png" alt="2" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-2x3x1.png" alt="3" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center"><img src="/img/grid-2x3x1.png" alt="Bottom" style="display:block;" border="0" /></td>
+  </tr>
+  </table>`
+  },
+  {
+    id: 'grid-2x2-alt',
+    name: 'Grid 2 x 2 Alt',
+    img: '/img/grid-2x2.png',
+    html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center"><img src="/img/grid-2x2.png" alt="A" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-2x2.png" alt="B" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="/img/grid-2x2.png" alt="C" style="display:block;" border="0" /></td>
+    <td align="center"><img src="/img/grid-2x2.png" alt="D" style="display:block;" border="0" /></td>
+  </tr>
+  </table>`
+  },
+  {
+    id: 'grid-3x1-alt',
+    name: 'Grid 3 x 1 Alt',
+    img: '/img/grid-3x1.png',
+    html: `<table width="600" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center"><img src="/img/grid-3x1.png" alt="Row 1" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="/img/grid-3x1.png" alt="Row 2" style="display:block;" border="0" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="/img/grid-3x1.png" alt="Row 3" style="display:block;" border="0" /></td>
+  </tr>
   </table>`
   }
-]
+];
 
 const flexLayouts = [
-  { id: 'flex-row', name: 'Row', img: '/img/grid-infinite-areas.svg', html: `<div class="d-flex">\n  <div class="flex-item">Item 1<\/div>\n  <div class="flex-item">Item 2<\/div>\n  <div class="flex-item">Item 3<\/div>\n<\/div>` },
-  { id: 'flex-wrap', name: 'Row Wrap', img: '/img/grid-sidebar.svg', html: `<div class="d-flex flex-wrap">\n  <div class="flex-item">Item 1<\/div>\n  <div class="flex-item">Item 2<\/div>\n  <div class="flex-item">Item 3<\/div>\n  <div class="flex-item">Item 4<\/div>\n<\/div>` },
-]
+  {
+    id: "flex-row",
+    name: "Row",
+    img: "/img/grid-infinite-areas.svg",
+    html: `<div class="d-flex">\n  <div class="flex-item">Item 1<\/div>\n  <div class="flex-item">Item 2<\/div>\n  <div class="flex-item">Item 3<\/div>\n<\/div>`,
+  },
+  {
+    id: "flex-wrap",
+    name: "Row Wrap",
+    img: "/img/grid-sidebar.svg",
+    html: `<div class="d-flex flex-wrap">\n  <div class="flex-item">Item 1<\/div>\n  <div class="flex-item">Item 2<\/div>\n  <div class="flex-item">Item 3<\/div>\n  <div class="flex-item">Item 4<\/div>\n<\/div>`,
+  },
+];
 
 // Simple toast inside this page
 function Toasts({ items }) {
-  if (!items.length) return null
+  if (!items.length) return null;
   return (
     <div className="fixed bottom-4 right-4 space-y-2 z-[10000]">
-      {items.map(t => (
-        <div key={t.id} className={`px-3 py-2 rounded-lg text-sm shadow-soft border ${t.variant==='warn' ? 'bg-red-500/15 border-red-500/40 text-red-100' : 'bg-slate-800/90 border-slate-700 text-slate-100'}`}>
+      {items.map((t) => (
+        <div
+          key={t.id}
+          className={`px-3 py-2 rounded-lg text-sm shadow-soft border ${
+            t.variant === "warn"
+              ? "bg-red-500/15 border-red-500/40 text-red-100"
+              : "bg-slate-800/90 border-slate-700 text-slate-100"
+          }`}
+        >
           {t.text}
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 export default function LayoutGridApp() {
-  const [tab, setTab] = useState('grid') // 'grid' | 'flex'
-  const [selectedLayout, setSelectedLayout] = useState(null)
-  const [toasts, setToasts] = useState([])
+  const [tab, setTab] = useState("grid"); // 'grid' | 'flex'
+  const [selectedLayout, setSelectedLayout] = useState(null);
+  const [toasts, setToasts] = useState([]);
 
-  const showToast = (text, variant='default') => {
-    const id = Math.random().toString(36).slice(2)
-    setToasts(prev => [...prev, { id, text, variant }])
-    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 1800)
-  }
+  const showToast = (text, variant = "default") => {
+    const id = Math.random().toString(36).slice(2);
+    setToasts((prev) => [...prev, { id, text, variant }]);
+    setTimeout(
+      () => setToasts((prev) => prev.filter((t) => t.id !== id)),
+      1800
+    );
+  };
 
-  const currentList = useMemo(() => tab === 'grid' ? gridLayouts : flexLayouts, [tab])
+  const currentList = useMemo(
+    () => (tab === "grid" ? gridLayouts : flexLayouts),
+    [tab]
+  );
 
   const copyToClipboard = async (html, name) => {
     try {
-      await navigator.clipboard.writeText(html)
-      showToast(`HTML copiado: ${name}`)
+      await navigator.clipboard.writeText(html);
+      showToast(`HTML copiado: ${name}`);
     } catch {
-      showToast('No se pudo copiar el HTML', 'warn')
+      showToast("No se pudo copiar el HTML", "warn");
     }
-  }
+  };
 
   const LayoutCard = ({ layout, category }) => (
     <div className="card group hover:shadow-lg transition-all duration-300 cursor-pointer border border-slate-800/60">
@@ -184,14 +307,24 @@ export default function LayoutGridApp() {
             className="w-full h-full object-contain group-hover:scale-[1.02] transition-transform duration-300"
             onError={(e) => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src = '/img/searcho-logo.png';
+              e.currentTarget.src = "/img/searcho-logo.png";
             }}
           />
         </div>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-medium text-slate-100 truncate">{layout.name}</h3>
-            <span className={`text-[10px] px-2 py-0.5 rounded-md border ${category==='grid' ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40' : 'bg-teal-500/15 text-teal-300 border-teal-500/40'}`}>{category==='grid' ? 'Grid' : 'Flex'}</span>
+            <h3 className="font-medium text-slate-100 truncate">
+              {layout.name}
+            </h3>
+            <span
+              className={`text-[10px] px-2 py-0.5 rounded-md border ${
+                category === "grid"
+                  ? "bg-indigo-500/15 text-indigo-300 border-indigo-500/40"
+                  : "bg-teal-500/15 text-teal-300 border-teal-500/40"
+              }`}
+            >
+              {category === "grid" ? "Grid" : "Flex"}
+            </span>
           </div>
           <div className="flex gap-2">
             <button
@@ -212,7 +345,7 @@ export default function LayoutGridApp() {
         </div>
       </div>
     </div>
-  )
+  );
 
   return (
     <div className="h-full">
@@ -222,8 +355,12 @@ export default function LayoutGridApp() {
             <Grid className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-slate-100">Layout Generator</h1>
-            <p className="text-sm text-slate-300">Genera layouts HTML para email marketing con grids y flexbox</p>
+            <h1 className="text-xl font-semibold text-slate-100">
+              Layout Generator
+            </h1>
+            <p className="text-sm text-slate-300">
+              Genera layouts HTML para email marketing con grids y flexbox
+            </p>
           </div>
         </div>
 
@@ -231,16 +368,28 @@ export default function LayoutGridApp() {
         <div className="mt-4">
           <div className="inline-flex rounded-xl border border-slate-700/70 bg-slate-900/60 p-1">
             <button
-              onClick={() => setTab('grid')}
-              className={`px-3 py-1.5 text-sm rounded-lg ${tab==='grid' ? 'bg-slate-800 text-slate-100' : 'text-slate-300 hover:text-slate-100'}`}
+              onClick={() => setTab("grid")}
+              className={`px-3 py-1.5 text-sm rounded-lg ${
+                tab === "grid"
+                  ? "bg-slate-800 text-slate-100"
+                  : "text-slate-300 hover:text-slate-100"
+              }`}
             >
-              <span className="inline-flex items-center gap-2"><Grid className="w-4 h-4"/> Layouts Grid</span>
+              <span className="inline-flex items-center gap-2">
+                <Grid className="w-4 h-4" /> Layouts Grid
+              </span>
             </button>
             <button
-              onClick={() => setTab('flex')}
-              className={`px-3 py-1.5 text-sm rounded-lg ${tab==='flex' ? 'bg-slate-800 text-slate-100' : 'text-slate-300 hover:text-slate-100'}`}
+              onClick={() => setTab("flex")}
+              className={`px-3 py-1.5 text-sm rounded-lg ${
+                tab === "flex"
+                  ? "bg-slate-800 text-slate-100"
+                  : "text-slate-300 hover:text-slate-100"
+              }`}
             >
-              <span className="inline-flex items-center gap-2"><Layers className="w-4 h-4"/> Layouts Flexbox</span>
+              <span className="inline-flex items-center gap-2">
+                <Layers className="w-4 h-4" /> Layouts Flexbox
+              </span>
             </button>
           </div>
         </div>
@@ -250,7 +399,7 @@ export default function LayoutGridApp() {
         {/* Gallery */}
         <div className="xl:col-span-2 card">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {currentList.map(l => (
+            {currentList.map((l) => (
               <LayoutCard key={l.id} layout={l} category={tab} />
             ))}
           </div>
@@ -263,25 +412,37 @@ export default function LayoutGridApp() {
             {selectedLayout && (
               <button
                 className="text-xs px-2 py-1 rounded-lg border border-slate-700 text-slate-300 hover:bg-slate-800"
-                onClick={() => copyToClipboard(selectedLayout.html, selectedLayout.name)}
+                onClick={() =>
+                  copyToClipboard(selectedLayout.html, selectedLayout.name)
+                }
               >
-                <Copy className="w-3 h-3 mr-1 inline"/> Copiar
+                <Copy className="w-3 h-3 mr-1 inline" /> Copiar
               </button>
             )}
           </div>
           {selectedLayout ? (
             <div className="space-y-3">
-              <img src={selectedLayout.img} alt={selectedLayout.name} className="w-full rounded-lg border border-slate-700/70"/>
+              <img
+                src={selectedLayout.img}
+                alt={selectedLayout.name}
+                className="w-full rounded-lg border border-slate-700/70"
+              />
               <label className="text-sm text-slate-300">Código HTML:</label>
-              <textarea readOnly value={selectedLayout.html} className="w-full h-64 bg-slate-900/70 border border-slate-700/80 rounded-xl p-3 text-xs font-mono text-slate-200" />
+              <textarea
+                readOnly
+                value={selectedLayout.html}
+                className="w-full h-64 bg-slate-900/70 border border-slate-700/80 rounded-xl p-3 text-xs font-mono text-slate-200"
+              />
             </div>
           ) : (
-            <div className="text-sm text-slate-400">Selecciona un layout para previsualizar su HTML.</div>
+            <div className="text-sm text-slate-400">
+              Selecciona un layout para previsualizar su HTML.
+            </div>
           )}
         </div>
       </div>
 
       <Toasts items={toasts} />
     </div>
-  )
+  );
 }
