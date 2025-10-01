@@ -43,9 +43,13 @@ export default function BannerSearchApp() {
       if (editing && editing.id != null) {
         const updated = { ...editing, ...payload };
         // Actualizar listado principal
-        setBanners((prev) => prev.map((b) => (b.id === editing.id ? { ...b, ...updated } : b)));
+        setBanners((prev) =>
+          prev.map((b) => (b.id === editing.id ? { ...b, ...updated } : b))
+        );
         // Actualizar pila seleccionada
-        setSelectedStack((prev) => prev.map((b) => (b.id === editing.id ? { ...b, ...updated } : b)));
+        setSelectedStack((prev) =>
+          prev.map((b) => (b.id === editing.id ? { ...b, ...updated } : b))
+        );
         // Actualizar seleccionado actual si corresponde
         if (selected?.id === editing.id) setSelected(updated);
       } else {
@@ -201,7 +205,9 @@ export default function BannerSearchApp() {
     if (!b) return "";
     const rawHref = b.href || "#";
     const isAmp = /%%=\s*RedirectTo\s*\(/i.test(rawHref);
-    const href = isAmp ? rawHref : `%%=RedirectTo(concat('${rawHref}',@prefix))=%%`;
+    const href = isAmp
+      ? rawHref
+      : `%%=RedirectTo(concat('${rawHref}',@prefix))=%%`;
     const src = b.src || b.img_src || "";
     const alt = b.alt || "";
     return `  <tr>\n    <td colspan="2" align="center">\n      <a href="${href}" target="_blank">\n         <img src="${src}" alt="${alt}" style="display:block; width: 100%;" border="0">\n       </a>\n    </td>\n  </tr>`;
@@ -608,11 +614,25 @@ export default function BannerSearchApp() {
                             copyHtml(b);
                             showToast("HTML copiado");
                             setLastCopiedId(b.id);
-                            setTimeout(() => setLastCopiedId((prev) => (prev === b.id ? null : prev)), 1200);
+                            setTimeout(
+                              () =>
+                                setLastCopiedId((prev) =>
+                                  prev === b.id ? null : prev
+                                ),
+                              1200
+                            );
                           }}
-                          className={`p-1 rounded-md hover:bg-slate-700/70 ${lastCopiedId === b.id ? 'ring-2 ring-blue-500 text-green-400' : 'text-white'}`}
+                          className={`p-1 rounded-md hover:bg-slate-700/70 ${
+                            lastCopiedId === b.id
+                              ? "ring-2 ring-blue-500 text-green-400"
+                              : "text-white"
+                          }`}
                         >
-                          {lastCopiedId === b.id ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
+                          {lastCopiedId === b.id ? (
+                            <Check size={16} className="text-green-400" />
+                          ) : (
+                            <Copy size={16} />
+                          )}
                         </button>
                         {lastCopiedId === b.id && (
                           <span className="absolute -top-2 left-1/2 -translate-x-1/2 translate-y-[-100%] text-xs px-2 py-1 rounded-md bg-slate-700 text-slate-100 border border-slate-600 shadow-soft whitespace-nowrap">
@@ -754,8 +774,8 @@ export default function BannerSearchApp() {
               </div>
             </div>
 
-            {/* Toggle AMPScript */}
-            <div className="flex items-center justify-between mb-3">
+            {/* Toggle AMPScript (oculto temporalmente) */}
+            <div className="flex items-center justify-between mb-3 hidden">
               <span className="text-sm text-slate-300">
                 Usar AMPscript (Salesforce)
               </span>
@@ -780,7 +800,9 @@ export default function BannerSearchApp() {
                 value={combinedCode}
               />
               <button
-                className={`absolute top-3 right-12 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 ${copiedCodeActive ? 'ring-2 ring-blue-500' : ''}`}
+                className={`absolute top-3 right-12 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 ${
+                  copiedCodeActive ? "ring-2 ring-blue-500" : ""
+                }`}
                 title="Copiar"
                 onClick={() => {
                   copy(combinedCode);
@@ -791,22 +813,27 @@ export default function BannerSearchApp() {
                   setTimeout(() => setCopiedCodeActive(false), 1200);
                 }}
               >
-                {copiedCodeActive ? <Check className="h-5 w-5 text-green-400" /> : <Copy className="h-5 w-5" />}
+                {copiedCodeActive ? (
+                  <Check className="h-5 w-5 text-green-400" />
+                ) : (
+                  <Copy className="h-5 w-5" />
+                )}
               </button>
               {copiedCodeTip && (
-                <div className="absolute -top-2 right-12 translate-y-[-100%] bg-slate-700 text-slate-100 text-xs px-2 py-1 rounded-md shadow-soft border border-slate-600">
+                <div className="absolute -top-2 right-12 translate-y-[-100%] bg-slate-700 text-slate-100 text-xs px-2 py-1 rounded-md shadow-soft border border-slate-600 hidden">
                   Copiado!
                 </div>
               )}
               <button
-                className="absolute top-3 right-3 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-slate-700 text-white hover:bg-slate-600"
+                className="absolute top-3 right-3 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-slate-700 text-white hover:bg-slate-600 hidden"
                 title="Descargar"
               >
                 <Download className="h-5 w-5" />
               </button>
             </div>
 
-            <div className="mt-3 flex gap-2">
+            {/* Acciones Importar/Eliminar (ocultas temporalmente) */}
+            <div className="mt-3 flex gap-2 hidden">
               <button
                 onClick={onImport}
                 className="inline-flex items-center gap-2 border border-slate-700/80 text-slate-200 rounded-xl px-3 py-2 text-sm"
@@ -831,8 +858,14 @@ export default function BannerSearchApp() {
             open={openCreate}
             onClose={onCloseCreate}
             initial={editing}
-            onSaved={(saved) => showToast(`${editing ? 'Actualizado' : 'Guardado'}: ${saved?.nombre || saved?.name || 'banner'}`)}
-            onError={(msg) => showToast(msg || 'Error al guardar', 'warn')}
+            onSaved={(saved) =>
+              showToast(
+                `${editing ? "Actualizado" : "Guardado"}: ${
+                  saved?.nombre || saved?.name || "banner"
+                }`
+              )
+            }
+            onError={(msg) => showToast(msg || "Error al guardar", "warn")}
           />,
           document.body
         )}

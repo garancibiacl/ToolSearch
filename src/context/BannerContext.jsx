@@ -100,7 +100,9 @@ export function BannerProvider({ children }) {
     (async () => {
       try {
         const data = await fetchCatalog();
-        setCatalog((prev) => (prev.length ? prev : (Array.isArray(data) ? data : [])));
+        setCatalog((prev) =>
+          prev.length ? prev : Array.isArray(data) ? data : []
+        );
       } catch {
         // noop: sin catálogo externo
       }
@@ -111,8 +113,8 @@ export function BannerProvider({ children }) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch('/api/banners');
-        if (!res.ok) return; 
+        const res = await fetch("/api/banners");
+        if (!res.ok) return;
         const json = await res.json();
         const list = Array.isArray(json?.data) ? json.data : [];
         if (list.length > 0) {
