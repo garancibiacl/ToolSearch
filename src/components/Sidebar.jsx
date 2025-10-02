@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Home, Search, Grid3X3, ChevronLeft, ChevronRight, SunMoon, Settings, HelpCircle, PlusCircle } from 'lucide-react'
+import React, { useEffect, useState } from 'react';
+import UrlToAmpScript from './UrlToAmpScript';
+import { Home, Search, Grid3X3, ChevronLeft, ChevronRight, SunMoon, Settings, HelpCircle, PlusCircle, Link2 } from 'lucide-react'
 
 const navItems = [
   { id: 'dashboard', title: 'Dashboard', icon: Home, target: 'dashboard' },
@@ -8,6 +9,7 @@ const navItems = [
 const toolItems = [
   { id: 'banner-search', title: 'Buscador Banner', icon: Search, target: 'banner' },
   { id: 'layout-grid', title: 'Layout Grid', icon: Grid3X3, target: 'grid', disabled: false },
+  { id: 'url-converter', title: 'Conversor de URL', icon: Link2, target: 'url-converter', isAction: true },
   { id: 'url-precio', title: 'URL Precio', icon: Grid3X3, target: 'url-precio', disabled: true },
 ]
 
@@ -45,8 +47,18 @@ export default function Sidebar({ active, setActive, theme, setTheme }) {
 
   const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark')
 
-  const handleToolClick = (target, disabled) => {
-    if (!disabled) setActive(target)
+  const [showUrlConverter, setShowUrlConverter] = useState(false);
+
+  const handleToolClick = (target, disabled, isAction = false) => {
+    if (disabled) return;
+    
+    if (isAction) {
+      if (target === 'url-converter') {
+        setShowUrlConverter(true);
+      }
+    } else {
+      setActive(target);
+    }
   }
 
   return (
@@ -83,7 +95,7 @@ export default function Sidebar({ active, setActive, theme, setTheme }) {
                   title={item.title}
                   active={active === item.target}
                   collapsed={collapsed}
-                  onClick={() => handleToolClick(item.target)}
+                  onClick={() => handleToolClick(item.target, item.disabled, item.isAction)}
                 />
               ))}
             </nav>
@@ -101,7 +113,7 @@ export default function Sidebar({ active, setActive, theme, setTheme }) {
                   active={active === item.target}
                   disabled={item.disabled}
                   collapsed={collapsed}
-                  onClick={() => handleToolClick(item.target, item.disabled)}
+                  onClick={() => handleToolClick(item.target, item.disabled, item.isAction)}
                   rightBadge={item.disabled ? (
                     <span className="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded">Próximamente</span>
                   ) : null}
@@ -139,6 +151,12 @@ export default function Sidebar({ active, setActive, theme, setTheme }) {
           </button>
         </div>
       </div>
+      
+      {/* URL to AMPscript Modal */}
+      <UrlToAmpScript 
+        isOpen={showUrlConverter} 
+        onClose={() => setShowUrlConverter(false)} 
+      />
     </aside>
   )
 }
