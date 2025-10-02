@@ -2,10 +2,13 @@
 
 
 
-# Agent Reglas
+## Mision
+Este agente ayuda a mantener y extender el repositorio de ToolSearch.
 
-- Cada funcion nueva debe incluir un bloque de comentarios que explica su propósito y como funciona.
-
+## 📋 Fuente de verdad
+- README.md
+- /context/rules.md
+- /AGENTS.md
 
 
 
