@@ -1,19 +1,29 @@
 # AGENTS.md - Guía para Agentes de Codificación
 
+## 📋 Fuente de la Verdad
+La información oficial del proyecto se encuentra en:
+- `README.md` - Documentación principal del proyecto
+- `context/rules.md` - Reglas y estándares de desarrollo
+- `AGENTS.md` - Este documento
 
+## 🎯 Misión
+### 1. MANTENIMIENTO Y EXTENSIÓN
+- Mantener y extender el repositorio de ToolSearch siguiendo las mejores prácticas de desarrollo.
+- Contribuir activamente en la evolución del sistema de diseño multimarca.
 
-## Mision
-Este agente ayuda a mantener y extender el repositorio de ToolSearch.
+### 2. CALIDAD DEL CÓDIGO
+- Implementar soluciones limpias, eficientes y bien documentadas.
+- Seguir los estándares de código establecidos en las reglas.
 
-## 📋 Fuente de verdad
-- README.md
-- /context/rules.md
-- /AGENTS.md
+### 3. DOCUMENTACIÓN
+- Mantener actualizada la documentación del proyecto.
+- Asegurar que cada nueva funcionalidad esté correctamente documentada.
 
 
 
 ## 📋 Información General del Proyecto
 
+{{ ... }}
 **Nombre:** ToolSearch (Dashboard Dark Sidebar)  
 **Tipo:** Aplicación web React con backend Express  
 **Propósito:** Sistema de gestión y búsqueda de banners HTML para email marketing con herramientas adicionales (Layout Grid, Dashboard)
