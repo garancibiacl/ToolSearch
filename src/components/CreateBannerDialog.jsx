@@ -1,23 +1,51 @@
 import React, { useEffect, useState } from "react";
 
+/**
+ * Normaliza una URL para que utilice el patrón AMPscript `RedirectTo` cuando el dominio pertenece a Sodimac.
+ *
+ * @param {string} h - URL original proporcionada por el usuario.
+ * @returns {string} URL convertida a AMPscript o sin modificar si no corresponde.
+ * @example
+ * normalizeHrefToAmp('https://www.sodimac.cl/promos')
+ * // => "%%=RedirectTo(concat('https://www.sodimac.cl/promos?',@prefix))=%%"
+ */
 function normalizeHrefToAmp(h) {
   const href = String(h || "").trim();
   if (!href) return "";
   if (/RedirectTo\(concat\(/.test(href)) return href; // ya está en AMPscript
+
   try {
-    const url = new URL(href, "https://www.sodimac.cl");
+    const baseHref =
+      href.startsWith("http") || href.startsWith("/")
+        ? href
+        : `https://${href}`;
+    const url = new URL(baseHref, "https://www.sodimac.cl");
     const isSodimac = /(^|\.)sodimac\.cl$/i.test(url.hostname);
+
     if (isSodimac) {
-      const hasQuery = href.includes("?");
-      const sep = hasQuery ? "&" : "?";
-      return `%%=RedirectTo(concat('${href}${sep}',@prefix))=%%`;
+      const normalizedSearch = url.search.length > 1 ? url.search : "";
+      const base = `${url.origin}${url.pathname}${normalizedSearch}`;
+      const separator = normalizedSearch ? "&" : "?";
+      return `%%=RedirectTo(concat('${base}${separator}',@prefix))=%%`;
     }
+
+    return url.href;
   } catch {
     // Si no es URL válida, la dejamos tal cual
   }
+
   return href;
 }
 
+/**
+ * Asegura que la ruta de la imagen tenga un host válido cuando se emplean rutas relativas.
+ *
+ * @param {string} u - Ruta de la imagen ingresada.
+ * @returns {string} Ruta absoluta si se reconoce como relativa, o el valor original.
+ * @example
+ * normalizeImg('/img/banner.png')
+ * // => "https://www.sodimac.cl/img/banner.png"
+ */
 function normalizeImg(u) {
   const val = String(u || "").trim();
   if (!val) return "";
@@ -26,6 +54,19 @@ function normalizeImg(u) {
   return val;
 }
 
+/**
+ * Modal de creación y edición de banners, normaliza URLs y permite importar datos desde HTML pegado.
+ *
+ * @param {object} props - Propiedades del componente.
+ * @param {boolean} props.open - Controla la visibilidad del modal.
+ * @param {Function} props.onClose - Callback al cerrar, recibe el payload creado/actualizado o null.
+ * @param {object} [props.initial] - Banner existente para modo edición.
+ * @param {Function} [props.onSaved] - Callback de éxito tras guardar.
+ * @param {Function} [props.onError] - Callback de error al guardar.
+ * @returns {JSX.Element|null} Modal listo para renderizar o null cuando está cerrado.
+ * @example
+ * <CreateBannerDialog open={open} onClose={handleClose} />
+ */
 export default function CreateBannerDialog({ open, onClose, initial, onSaved, onError }) {
   const [nombre, setNombre] = useState(initial?.nombre || "");
   const [href, setHref] = useState(initial?.href || "");
@@ -45,6 +86,13 @@ export default function CreateBannerDialog({ open, onClose, initial, onSaved, on
     }
   }, [open, initial]);
 
+  /**
+   * Extrae href, src y alt de un fragmento HTML y actualiza los inputs del formulario.
+   *
+   * @returns {void}
+   * @example
+   * importHtml();
+   */
   function importHtml() {
     try {
       // Extracción muy básica: busca href, src y alt en el HTML pegado
@@ -62,6 +110,15 @@ export default function CreateBannerDialog({ open, onClose, initial, onSaved, on
     }
   }
 
+  /**
+   * Gestiona el envío del formulario, llama al backend cuando se crea un banner nuevo
+   * y devuelve los datos normalizados al componente padre.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - Evento de formulario.
+   * @returns {Promise<void>} Operación asíncrona que resuelve tras guardar o manejar el error.
+   * @example
+   * <form onSubmit={handleSubmit}>…</form>
+   */
   async function handleSubmit(e) {
     e.preventDefault();
     if (!nombre || !img) return; // href opcional para huinchas
