@@ -579,6 +579,24 @@ export default function BannerSearchApp() {
                       <div className="mt-1 text-xs text-slate-400 truncate">
                         {b.alt}
                       </div>
+                      <div className="mt-1">
+                        <div
+                          className="text-[10px] px-2 py-0.5 rounded-md inline-block font-bold"
+                          style={{
+                            backgroundColor: b.nombre
+                              ?.trim()
+                              .toUpperCase()
+                              .startsWith("HUINCHA")
+                              ? "#ffcba4"
+                              : "#b0eac4",
+                            color: "#0a0a0a",
+                          }}
+                        >
+                          {b.nombre?.trim().toUpperCase().startsWith("HUINCHA")
+                            ? "HUINCHA"
+                            : "BANNER"}
+                        </div>
+                      </div>
                     </div>
                     <div className="flex items-center gap-1 ml-2">
                       <button
@@ -658,11 +676,8 @@ export default function BannerSearchApp() {
           <div className="card">
             {/* Encabezado y contador */}
             <div className="flex items-center justify-between mb-2">
-              <div className="text-slate-200 font-medium">Vista previa</div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-600/40">
-                  {selectedStack?.length || 0} banners agregados
-                </span>
+              <div className="flex items-center justify-between w-full">
+                <div className="text-slate-200 font-medium">Vista previa</div>
                 <button
                   type="button"
                   onClick={onClearLocalStack}
@@ -729,31 +744,11 @@ export default function BannerSearchApp() {
                           />
                         </div>
 
-                        {/* Título + chip */}
-                        <div className="mt-2 flex flex-wrap items-center gap-2">
+                        {/* Solo título */}
+                        <div className="mt-2">
                           <div className="px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-200 max-w-full truncate">
                             {b.name || b.nombre || "Sin título"}
                           </div>
-                          {(() => {
-                            const nombre = (b.nombre || b.name || "")
-                              .trim()
-                              .toUpperCase();
-                            const isHuinchaByName =
-                              nombre === "HUINCHA VOA HOGAR";
-                            const label = isHuinchaByName
-                              ? "Huincha"
-                              : "Banner";
-                            const bg = isHuinchaByName ? "#ffcba4" : "#b0eac4";
-                            const color = "#0a0a0a";
-                            return (
-                              <span
-                                className="text-[10px] px-2 py-0.5 rounded-md"
-                                style={{ backgroundColor: bg, color }}
-                              >
-                                {label}
-                              </span>
-                            );
-                          })()}
                         </div>
                       </div>
                     );
