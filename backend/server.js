@@ -18,6 +18,27 @@ const dataFile = path.join(dataDir, "banners.json");
 const publicDataDir = path.join(__dirname, "..", "public", "backend", "data");
 const publicDataFile = path.join(publicDataDir, "banners.json");
 
+function normalizeRecord(entry, idx = 0) {
+  const record = { ...entry };
+  if (!record.id) {
+    record.id = Date.now() + idx;
+  }
+  if (!record.createdAt) {
+    record.createdAt = new Date().toISOString();
+  }
+  return record;
+}
+
+function normalizeList(list) {
+  let changed = false;
+  const normalized = (Array.isArray(list) ? list : []).map((item, idx) => {
+    const result = normalizeRecord(item, idx);
+    if (result !== item && (!item?.id || !item?.createdAt)) changed = true;
+    return result;
+  });
+  return { normalized, changed };
+}
+
 async function ensureStore() {
   await fs.ensureDir(dataDir);
   const exists = await fs.pathExists(dataFile);
@@ -30,7 +51,11 @@ async function readStore() {
   await ensureStore();
   try {
     const list = await fs.readJson(dataFile);
-    return Array.isArray(list) ? list : [];
+    const { normalized, changed } = normalizeList(list);
+    if (changed) {
+      await writeStore(normalized);
+    }
+    return normalized;
   } catch {
     return [];
   }
@@ -38,11 +63,12 @@ async function readStore() {
 
 async function writeStore(list) {
   await fs.ensureDir(dataDir);
-  await fs.writeJson(dataFile, list, { spaces: 2 });
+  const { normalized } = normalizeList(list);
+  await fs.writeJson(dataFile, normalized, { spaces: 2 });
   // Mirror to public path for visibility if desired
   await fs.ensureDir(publicDataDir);
   // Guardar en público SOLO el esquema minimal que solicitaste
-  const publicList = list.map((b) => ({
+  const publicList = normalized.map((b) => ({
     nombre: b.nombre,
     href: b.href,
     img_src: b.img_src,
